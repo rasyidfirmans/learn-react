@@ -19,11 +19,17 @@
 // defining a component using class component concept
 function Button(props) {
   // giving default value using destructuring concept
-  const { children = "Button", classname = "bg-black" } = props;
+  const {
+    children = "Button",
+    classname = "bg-black",
+    type = "button",
+    onClick = () => {},
+  } = props;
   return (
     <button
       className={`h-10 px-6 font-semibold rounded-md ${classname} text-white`}
-      type="submit"
+      type={type}
+      onClick={onClick}
     >
       {children}
     </button>

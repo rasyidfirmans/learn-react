@@ -1,4 +1,5 @@
 import CardProduct from "../components/fragments/CardProduct";
+import Button from "../components/elements/button/Button";
 
 const products = [
   {
@@ -25,18 +26,33 @@ const products = [
 ];
 
 const ProductPage = () => {
+  const email = localStorage.getItem("email");
+  const handleLogout = () => {
+    localStorage.removeItem("email");
+    localStorage.removeItem("password");
+    window.location.href = "/login";
+  };
+
   return (
-    <div className="flex justify-center py-5">
-      {products.map((product) => (
-        <CardProduct key={product.id}>
-          <CardProduct.Header image={product.image} />
-          <CardProduct.Body name={product.name}>
-            {product.desc}
-          </CardProduct.Body>
-          <CardProduct.Footer price={`Rp ${product.price}`} />
-        </CardProduct>
-      ))}
-    </div>
+    <>
+      <div className="flex justify-end h-20 bg-blue-600 text-white px-10 items-center">
+        <h1>{email}</h1>
+        <Button classname="ml-5 bg-black" onClick={handleLogout}>
+          Logout
+        </Button>
+      </div>
+      <div className="flex justify-center py-5">
+        {products.map((product) => (
+          <CardProduct key={product.id}>
+            <CardProduct.Header image={product.image} />
+            <CardProduct.Body name={product.name}>
+              {product.desc}
+            </CardProduct.Body>
+            <CardProduct.Footer price={`Rp ${product.price}`} />
+          </CardProduct>
+        ))}
+      </div>
+    </>
   );
 };
 
