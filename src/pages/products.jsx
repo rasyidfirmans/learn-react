@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CardProduct from "../components/fragments/CardProduct";
 import Button from "../components/elements/button/Button";
 
@@ -30,6 +30,26 @@ const ProductPage = () => {
   const email = localStorage.getItem("email");
 
   const [cart, setCart] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  // componentDidMount
+  useEffect(() => {
+    const savedCart = JSON.parse(localStorage.getItem("cart")) || [];
+    setCart(savedCart);
+  }, []);
+
+  // componentDidUpdate
+  useEffect(() => {
+    if (cart.length > 0) {
+      const total = cart.reduce((acc, item) => {
+        const product = products.find((product) => product.id === item.id);
+        return (acc += product.price * item.quantity);
+      }, 0);
+
+      setTotalPrice(total);
+      localStorage.setItem("cart", JSON.stringify(cart));
+    }
+  }, [cart]);
 
   const handleLogout = () => {
     localStorage.removeItem("email");
@@ -103,6 +123,17 @@ const ProductPage = () => {
                   </tr>
                 );
               })}
+              <tr>
+                <td colSpan="2">
+                  <b>Total Price</b>
+                </td>
+                <td>
+                  {new Intl.NumberFormat("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                  }).format(totalPrice)}
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
