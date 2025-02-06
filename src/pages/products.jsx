@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CardProduct from "../components/fragments/CardProduct";
 import Button from "../components/elements/button/Button";
 
@@ -70,6 +70,33 @@ const ProductPage = () => {
     });
   };
 
+  // Hook useRef
+  const cartRef = useRef(JSON.parse(localStorage.getItem("cart")) || []);
+
+  // eslint-disable-next-line no-unused-vars
+  const handleAddToCartRef = (id) => {
+    if (cartRef.current.find((item) => item.id === id)) {
+      cartRef.current = cartRef.current.map((item) =>
+        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+      );
+    } else {
+      cartRef.current = [...cartRef.current, { id, quantity: 1 }];
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cartRef.current));
+  };
+
+  const totalPriceRef = useRef(null);
+  console.log(totalPriceRef);
+
+  useEffect(() => {
+    if (cart.length > 0) {
+      totalPriceRef.current.style.display = "table-row";
+    } else {
+      totalPriceRef.current.style.display = "none";
+    }
+  }, [cart]);
+
   return (
     <>
       <div className="flex justify-end h-20 bg-blue-600 text-white px-10 items-center">
@@ -123,7 +150,7 @@ const ProductPage = () => {
                   </tr>
                 );
               })}
-              <tr>
+              <tr ref={totalPriceRef}>
                 <td colSpan="2">
                   <b>Total Price</b>
                 </td>
