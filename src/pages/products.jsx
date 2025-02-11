@@ -2,10 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import CardProduct from "../components/fragments/CardProduct";
 import Button from "../components/elements/button/Button";
 import { getProducts } from "../services/products.servise";
-import { getUsername } from "../services/auth.service";
+import { useLogin } from "../hooks/useLogin";
+import { useLogout } from "../hooks/useLogout";
 
 const ProductPage = () => {
-  const [username, setUserName] = useState("");
+  const username = useLogin();
   const [cart, setCart] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [products, setProducts] = useState([]);
@@ -14,15 +15,6 @@ const ProductPage = () => {
     getProducts((data) => {
       setProducts(data);
     });
-  }, []);
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      setUserName(getUsername(token));
-    } else {
-      window.location.href = "/login";
-    }
   }, []);
 
   // componentDidMount
@@ -43,12 +35,6 @@ const ProductPage = () => {
       localStorage.setItem("cart", JSON.stringify(cart));
     }
   }, [cart, products]);
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("password");
-    window.location.href = "/login";
-  };
 
   const handleAddToCart = (id) => {
     setCart((prevCart) => {
@@ -93,7 +79,7 @@ const ProductPage = () => {
     <>
       <div className="flex justify-end h-20 bg-blue-600 text-white px-10 items-center">
         <h1 className="font-bold">{username}</h1>
-        <Button classname="ml-5 bg-black" onClick={handleLogout}>
+        <Button classname="ml-5 bg-black" onClick={useLogout}>
           Logout
         </Button>
       </div>

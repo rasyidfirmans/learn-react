@@ -1,6 +1,7 @@
 import ErrorPage from "./pages/404";
 import LoginPage from "./pages/login";
 import ProductPage from "./pages/products";
+import ProfilePage from "./pages/profile";
 import SignupPage from "./pages/signup";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
@@ -22,6 +23,10 @@ function App() {
     {
       path: "/products",
       element: <ProductPage />,
+    },
+    {
+      path: "/profile",
+      element: <ProfilePage />,
     },
   ]);
 
