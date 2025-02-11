@@ -1,4 +1,5 @@
 import ErrorPage from "./pages/404";
+import DetailProductPage from "./pages/detailProduct";
 import LoginPage from "./pages/login";
 import ProductPage from "./pages/products";
 import ProfilePage from "./pages/profile";
@@ -27,6 +28,10 @@ function App() {
     {
       path: "/profile",
       element: <ProfilePage />,
+    },
+    {
+      path: "/product/:id",
+      element: <DetailProductPage />,
     },
   ]);
 
