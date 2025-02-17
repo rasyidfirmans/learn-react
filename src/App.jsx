@@ -1,4 +1,5 @@
 import DarkModeContextProvider from "./context/DarkMode";
+import { TotalPriceProvider } from "./context/TotalPriceContext";
 import ErrorPage from "./pages/404";
 import DetailProductPage from "./pages/detailProduct";
 import LoginPage from "./pages/login";
@@ -38,7 +39,9 @@ function App() {
 
   return (
     <DarkModeContextProvider>
-      <RouterProvider router={router} />
+      <TotalPriceProvider>
+        <RouterProvider router={router} />
+      </TotalPriceProvider>
     </DarkModeContextProvider>
   );
 }

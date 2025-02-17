@@ -1,25 +1,34 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 import { DarkMode } from "../../context/DarkMode";
+import { useFunctionTotalPriceDispatch } from "../../hooks/useFunctionTotalPriceDispatch";
+import { useTotalPrice } from "../../hooks/useTotalPrice";
 
 const TableCart = (props) => {
   const { products } = props;
   const { isDarkMode } = useContext(DarkMode);
   const cart = useSelector((state) => state.cart.data);
-  const [totalPrice, setTotalPrice] = useState(0);
+  const totalPriceDispatch = useFunctionTotalPriceDispatch();
+  const { total } = useTotalPrice();
 
   useEffect(() => {
     if (products.length > 0 && cart.length > 0) {
-      const total = cart.reduce((acc, item) => {
+      const totalPrice = cart.reduce((acc, item) => {
         const product = products.find((product) => product.id === item.id);
         return (acc += product.price * item.quantity);
       }, 0);
 
-      setTotalPrice(total);
+      totalPriceDispatch({
+        type: "UPDATE_TOTAL_PRICE",
+        payload: {
+          total: totalPrice,
+        },
+      });
+
       localStorage.setItem("cart", JSON.stringify(cart));
     }
-  }, [cart, products]);
+  }, [cart, products, totalPriceDispatch]);
 
   const totalPriceRef = useRef(null);
 
@@ -75,7 +84,7 @@ const TableCart = (props) => {
                 style: "currency",
                 currency: "USD",
               })
-                .format(totalPrice)
+                .format(total)
                 .replace("US$", "US$ ")}
             </b>
           </td>
