@@ -1,3 +1,4 @@
+import DarkModeContextProvider from "./context/DarkMode";
 import ErrorPage from "./pages/404";
 import DetailProductPage from "./pages/detailProduct";
 import LoginPage from "./pages/login";
@@ -35,7 +36,11 @@ function App() {
     },
   ]);
 
-  return <RouterProvider router={router} />;
+  return (
+    <DarkModeContextProvider>
+      <RouterProvider router={router} />
+    </DarkModeContextProvider>
+  );
 }
 
 export default App;
